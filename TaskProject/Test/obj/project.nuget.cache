@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "Apc0QTEyY39GKknhUK0mFfPGhY4jIUXWkDotyelCnxE17XWbQs48LkKP0E63dg0o3WedebVOYP/JabDmHaaz+A==",
+  "success": false,
+  "projectFilePath": "D:\\TaskProject\\Test\\Test.csproj",
+  "expectedPackageFiles": [],
+  "logs": [
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'EntityFramework' from remote source 'https://api.nuget.org/v3-flatcontainer/entityframework/index.json'.",
+      "libraryId": "EntityFramework"
+    }
+  ]
+}

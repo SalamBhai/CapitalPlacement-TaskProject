@@ -3,6 +3,8 @@ using TaskProjectWebAPI.Implementations.Repositories;
 using TaskProjectWebAPI.Interfaces.Services;
 using TaskProjectWebAPI.Implementations.Services;
 using Microsoft.EntityFrameworkCore;
+using TaskProjectWebAPI.Context;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseCosmos(builder.Configuration["CosmosDBConnectionString"],

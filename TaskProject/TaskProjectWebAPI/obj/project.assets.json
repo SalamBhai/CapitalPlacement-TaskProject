@@ -7604,11 +7604,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "d:\\TaskProject\\TaskProjectWebAPI\\TaskProjectWebAPI.csproj",
+      "projectUniqueName": "c:\\Users\\user\\Desktop\\CapitalPlacement-TaskProject\\TaskProject\\TaskProjectWebAPI\\TaskProjectWebAPI.csproj",
       "projectName": "TaskProjectWebAPI",
-      "projectPath": "d:\\TaskProject\\TaskProjectWebAPI\\TaskProjectWebAPI.csproj",
+      "projectPath": "c:\\Users\\user\\Desktop\\CapitalPlacement-TaskProject\\TaskProject\\TaskProjectWebAPI\\TaskProjectWebAPI.csproj",
       "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "d:\\TaskProject\\TaskProjectWebAPI\\obj\\",
+      "outputPath": "c:\\Users\\user\\Desktop\\CapitalPlacement-TaskProject\\TaskProject\\TaskProjectWebAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -7625,8 +7625,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "D:\\TaskProject\\TaskConsole\\TaskConsole.csproj": {
-              "projectPath": "D:\\TaskProject\\TaskConsole\\TaskConsole.csproj"
+            "c:\\Users\\user\\Desktop\\CapitalPlacement-TaskProject\\TaskProject\\TaskConsole\\TaskConsole.csproj": {
+              "projectPath": "c:\\Users\\user\\Desktop\\CapitalPlacement-TaskProject\\TaskProject\\TaskConsole\\TaskConsole.csproj"
             }
           }
         }

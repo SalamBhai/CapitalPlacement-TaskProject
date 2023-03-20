@@ -1,5 +1,7 @@
-using TaskConsole.DTOs.RetrievalModels.Program;
-using TaskConsole.DTOs.RequestModels.Program;
+
+using TaskConsole.DTOs.RequestModels;
+using TaskConsole.DTOs.RetrievalModels;
+
 namespace TaskProjectWebAPI.Interfaces.Services
 {
     public interface IApplicationTemplateService

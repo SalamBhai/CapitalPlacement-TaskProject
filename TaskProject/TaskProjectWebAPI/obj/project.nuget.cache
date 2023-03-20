@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "hcbmrVK/GGJvUt1mBLaDkrISVRkoaTEnTNXVqtS2H0YmCnb090o4NyJ/YDQGF6K0vjhNsoG39n3xthCccrLgpg==",
+  "dgSpecHash": "bEruy1BKS1/UPjF5aCqa95T03GrsmbbiGKp0j0ORsDyPuxKDuDOXp0XH6AHqWvirLUX6oVW7+Ph6Ctwb0T0hWg==",
   "success": true,
-  "projectFilePath": "d:\\TaskProject\\TaskProjectWebAPI\\TaskProjectWebAPI.csproj",
+  "projectFilePath": "c:\\Users\\user\\Desktop\\CapitalPlacement-TaskProject\\TaskProject\\TaskProjectWebAPI\\TaskProjectWebAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\user\\.nuget\\packages\\azure.core\\1.19.0\\azure.core.1.19.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",

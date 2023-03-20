@@ -12,9 +12,9 @@ public class Program : AdditionalInformation
      [Required]
     public List<Skills> ApplicantSkills {get; set;} = new List<Skills>();
      [Required]
-    public List<string> Benefits {get; set;}
+    public List<string> Benefits {get; set;} = new List<string>();
      [Required]
-    public List<string> ApplicationCriteria {get; set;}
+    public List<string> ApplicationCriteria {get; set;} = new List<string>();
     public ICollection<Application> Applications = new HashSet<Application>();
 
 }

@@ -60,7 +60,7 @@ public class ApplicationTemplateController : ControllerBase
       return response.Status? Ok(response) : BadRequest(response);
     }
     [HttpGet]
-    public async Task<IActionResult> GetApplicationsAsync()
+    public async Task<IActionResult> GetQuestionsAsync()
     {
       var response = await _applicationTemplateService.GetQuestionsAsync();
       return response.Status? Ok(response) : BadRequest(response);
@@ -73,7 +73,7 @@ public class ApplicationTemplateController : ControllerBase
     }
     
     [HttpDelete]
-    public async Task<IActionResult> DeleteApplicationAsync([FromQuery] string id)
+    public async Task<IActionResult> DeleteQuestionAsync([FromQuery] string id)
     {
       var response = await _applicationTemplateService.DeleteQuestionAsync(id);
       return response.Status? Ok(response) : BadRequest(response);

@@ -17,13 +17,13 @@ public class ProgramDetailsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateProgramAsync(CreateProgram programRequestModel)
+    public async Task<IActionResult> CreateProgramAsync([FromBody] CreateProgram programRequestModel)
     {
-      var response = await _programDetailsService.AddProgramAsync(stageRequestModel);
+      var response = await _programDetailsService.AddProgramAsync(programRequestModel);
       return response.Status? Ok(response) : BadRequest(response);
     }
     [HttpGet]
-    public async Task<IActionResult> GetProgramAsync(string Id)
+    public async Task<IActionResult> GetProgramAsync([FromQuery] string Id)
     {
       var response = await _programDetailsService.GetProgramAsync(Id);
       return response.Status? Ok(response) : BadRequest(response);

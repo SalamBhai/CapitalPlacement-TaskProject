@@ -20,7 +20,6 @@ public class ApplicationContext : DbContext
             {
                 StageType = StageType.Applied,
                 StageName = "Applied",
-                Id = Guid.NewGuid(),
             }
         );
     }

@@ -52,7 +52,7 @@ namespace TaskProjectWebAPI.Implementations.Services
                 };
 
                 var savedResponse = await _applicationRepository.AddAsync(application);
-                if (!savedResponse) return new BaseResponse<bool>
+                if (savedResponse is null) return new BaseResponse<bool>
                 {
                     Status = false,
                     Message = $"An error occured, Application could not be saved.",
@@ -81,7 +81,7 @@ namespace TaskProjectWebAPI.Implementations.Services
                     return new BaseResponse<bool>
                     {
                         Status = false,
-                        Message = $"Application With Email Address: {applicationModel.EmailAddress} does not exist",
+                        Message = $"Application With Email Address: {emailAddress} does not exist",
                     };
                 }
                 application.FirstName = applicationModel.FirstName;
@@ -89,7 +89,7 @@ namespace TaskProjectWebAPI.Implementations.Services
                 application.PhoneNumber = applicationModel.PhoneNumber;
                 application.CurrentResidence = applicationModel.CurrentResidence;
                 var updateResponse = await _applicationRepository.UpdateAsync(application);
-                if (!updateResponse) return new BaseResponse<bool>
+                if (updateResponse is null) return new BaseResponse<bool>
                 {
                     Status = false,
                     Message = $"An error occured! Application could not be updated.",
@@ -113,7 +113,7 @@ namespace TaskProjectWebAPI.Implementations.Services
             try
             {
                 var applications = await _applicationRepository.GetAllAsync();
-                if (applications.Count == 0) return new BaseResponse<IEnumerable<ApplicationModel>>
+                if (applications.Count() == 0) return new BaseResponse<IEnumerable<ApplicationModel>>
                 {
                     Status = false,
                     Message = "Fetching Applications Returned Empty Data..."
@@ -125,20 +125,7 @@ namespace TaskProjectWebAPI.Implementations.Services
                     Data = applicationsReturned,
                     Status = true,
                     Message = "Applications Successfully Retrieved..."
-                }; var applications = await _applicationRepository.GetAllAsync();
-                if (applications.Count == 0) return new BaseResponse<IEnumerable<ApplicationModel>>
-                {
-                    Status = false,
-                    Message = "Fetching Applications Returned Empty Data..."
-                };
-
-                var applicationsReturned = applications.Select(app => app.Adapt<ApplicationModel>()).ToList();
-                return new BaseResponse<IEnumerable<ApplicationModel>>
-                {
-                    Data = applicationsReturned,
-                    Status = true,
-                    Message = "Applications Successfully Retrieved..."
-                };
+                }; 
             }
             catch (System.Exception)
             {
@@ -151,7 +138,7 @@ namespace TaskProjectWebAPI.Implementations.Services
             try
             {
                 var application = await _applicationRepository.GetAsync(Id);
-                if (application is null) return new BaseResponse<IEnumerable<ApplicationModel>>
+                if (application is null) return new BaseResponse<ApplicationModel>
                 {
                     Status = false,
                     Message = "Fetching Application Returned Empty Data..."
@@ -186,12 +173,8 @@ namespace TaskProjectWebAPI.Implementations.Services
                     };
                 }
 
-                var deleteResponse = await _applicationRepository.DeleteAsync(application);
-                if (!deleteResponse) return new BaseResponse<bool>
-                {
-                    Status = false,
-                    Message = $"An error occured! Application could not be deleted.",
-                };
+                 await _applicationRepository.DeleteAsync(application);
+                
                 return new BaseResponse<bool>
                 {
                     Status = true,
@@ -206,6 +189,7 @@ namespace TaskProjectWebAPI.Implementations.Services
         }
         public async Task<BaseResponse<bool>> CreateQuestionAsync(BaseQuestionRequestModel questionRequestModel)
         {
+            var baseResponse = new BaseResponse<bool>();
             try
             {
                 switch (questionRequestModel.QuestionType.ToString())
@@ -221,14 +205,14 @@ namespace TaskProjectWebAPI.Implementations.Services
                             },
                         };
                         var savedResponse = await _questionRepository.AddAsync(question);
-                        if (savedResponse) return new BaseResponse<bool>
+                        if (savedResponse is not null) baseResponse =  new BaseResponse<bool>
                         {
                             Status = true,
                             Message = "Question Successfully Added."
                         };
                         break;
                     case "Dropdown":
-                        var question = new Question
+                        var dropdownQuestion = new Question
                         {
                             QuestionContent = questionRequestModel.QuestionContent,
                             DropdownQuestion = new DropdownQuestion
@@ -237,33 +221,34 @@ namespace TaskProjectWebAPI.Implementations.Services
                                 EnableOtherOption = questionRequestModel.DropdownQuestionModel.EnableOtherOption,
                             },
                         };
-                        var savedResponse = await _questionRepository.AddAsync(question);
-                        if (savedResponse) return new BaseResponse<bool>
+                        var savedDropdownResponse = await _questionRepository.AddAsync(dropdownQuestion);
+                        if (savedDropdownResponse is not null) baseResponse = new BaseResponse<bool>
                         {
                             Status = true,
                             Message = "Question Successfully Added."
                         };
                         break;
                     case "MultipleChoice":
-                        var question = new Question
+                        var multipleChoiceQuestion = new Question
                         {
                             QuestionContent = questionRequestModel.QuestionContent,
-                            DropdownQuestion = new MultipleChoiceQuestion
+                            MultipleChoiceQuestion = new MultipleChoiceQuestion
                             {
                                 Options = questionRequestModel.MultipleChoiceQuestionModel.Options,
                                 EnableOtherOption = questionRequestModel.MultipleChoiceQuestionModel.EnableOtherOption,
-                                MaximumNumberOfChoicesAllowed = questionRequestModel.MultipleChoiceQuestionModel.MaximumChoicesAllowed,
+                                MaximumChoicesAllowed = questionRequestModel.MultipleChoiceQuestionModel.MaximumNumberOfChoicesAllowed
+                                
                             },
                         };
-                        var savedResponse = await _questionRepository.AddAsync(question);
-                        if (savedResponse) return new BaseResponse<bool>
+                        var savedMultipleChoiceQuestionResponse = await _questionRepository.AddAsync(multipleChoiceQuestion);
+                        if (savedMultipleChoiceQuestionResponse is not null) baseResponse = new BaseResponse<bool>
                         {
                             Status = true,
                             Message = "Question Successfully Added."
                         };
                         break;
                     case "VideoQuestion":
-                        var question = new Question
+                        var videoQuestion = new Question
                         {
                             QuestionContent = questionRequestModel.QuestionContent,
                             VideoBasedQuestion = new VideoBasedQuestion
@@ -272,15 +257,15 @@ namespace TaskProjectWebAPI.Implementations.Services
                                 MaxDurationOfVideo = questionRequestModel.VideoQuestionModel.MaxDurationOfVideo,
                             },
                         };
-                        var savedResponse = await _questionRepository.AddAsync(question);
-                        if (savedResponse) return new BaseResponse<bool>
+                        var savedVideoQuestionResponse = await _questionRepository.AddAsync(videoQuestion);
+                        if (savedVideoQuestionResponse is not null) baseResponse = new BaseResponse<bool>
                         {
                             Status = true,
                             Message = "Question Successfully Added."
                         };
                         break;
                     case "FileUpload":
-                        var question = new Question
+                        var fileUploadQuestion = new Question
                         {
                             QuestionContent = questionRequestModel.QuestionContent,
                             FileUploadQuestion = new FileUploadQuestion
@@ -288,15 +273,15 @@ namespace TaskProjectWebAPI.Implementations.Services
                                 FilePath = questionRequestModel.FileUploadQuestionModel.FilePath,
                             },
                         };
-                        var savedResponse = await _questionRepository.AddAsync(question);
-                        if (savedResponse) return new BaseResponse<bool>
+                        var savedFileUploadQuestionResponse = await _questionRepository.AddAsync(fileUploadQuestion);
+                        if (savedFileUploadQuestionResponse is not null) baseResponse = new BaseResponse<bool>
                         {
                             Status = true,
                             Message = "Question Successfully Added."
                         };
                         break;
                     case "Number":
-                        var question = new Question
+                        var numberQuestion = new Question
                         {
                             QuestionContent = questionRequestModel.QuestionContent,
                             NumberQuestion = new NumberQuestion
@@ -304,36 +289,36 @@ namespace TaskProjectWebAPI.Implementations.Services
                                 QuestionNumber = questionRequestModel.NumberQuestionModel.NumberQuestion,
                             },
                         };
-                        var savedResponse = await _questionRepository.AddAsync(question);
-                        if (savedResponse) return new BaseResponse<bool>
+                        var savedNumberQuestionResponse = await _questionRepository.AddAsync(numberQuestion);
+                        if (savedNumberQuestionResponse is not null) baseResponse = new BaseResponse<bool>
                         {
                             Status = true,
                             Message = "Question Successfully Added."
                         };
                         break;
                     case "Date":
-                        var question = new Question
+                        var dateQuestion = new Question
                         {
                             QuestionContent = questionRequestModel.QuestionContent,
-                            FileUploadQuestion = new FileUploadQuestion
+                            DateQuestion = new DateQuestion
                             {
-                                DateQuestion = questionRequestModel.DateQuestionModel.DateQuestion,
+                               DateQuestionToAsk =  questionRequestModel.DateQuestionModel.DateQuestion,
                             },
                         };
-                        var savedResponse = await _questionRepository.AddAsync(question);
-                        if (savedResponse) return new BaseResponse<bool>
+                        var savedDateQuestionResponse = await _questionRepository.AddAsync(dateQuestion);
+                        if (savedDateQuestionResponse is not null) baseResponse = new BaseResponse<bool>
                         {
                             Status = true,
                             Message = "Question Successfully Added."
                         };
                         break;
                     default:
-                        var question = new Question
+                        var generalQuestion = new Question
                         {
                             QuestionContent = questionRequestModel.QuestionContent
                         };
-                        var savedResponse = await _questionRepository.AddAsync(question);
-                        if (savedResponse) return new BaseResponse<bool>
+                        var savedGeneralQuestionResponse = await _questionRepository.AddAsync(generalQuestion);
+                        if (savedGeneralQuestionResponse is not null) baseResponse = new BaseResponse<bool>
                         {
                             Status = true,
                             Message = "Question Successfully Added."
@@ -346,12 +331,13 @@ namespace TaskProjectWebAPI.Implementations.Services
 
                 throw;
             }
+            return baseResponse;
         }
         public async Task<BaseResponse<bool>> UpdateQuestionAsync(UpdateQuestionModel questionUpdateModel, string Id)
         {
             try
             {
-                var question = await _questionRepository.GetAsync(question => question.EmailAddress == emailAddress);
+                var question = await _questionRepository.GetAsync(question => question.Id == Id);
 
                 if (question is null)
                 {
@@ -365,7 +351,7 @@ namespace TaskProjectWebAPI.Implementations.Services
                 question.Response = questionUpdateModel.Response;
                 question.QuestionContent = questionUpdateModel.QuestionContent;
                 var updateResponse = await _questionRepository.UpdateAsync(question);
-                if (!updateResponse) return new BaseResponse<bool>
+                if (updateResponse is not null) return new BaseResponse<bool>
                 {
                     Status = false,
                     Message = $"An error occured! Question could not be updated.",
@@ -389,7 +375,7 @@ namespace TaskProjectWebAPI.Implementations.Services
             try
             {
                 var questions = await _questionRepository.GetAllAsync();
-                if (questions.Count == 0) return new BaseResponse<IEnumerable<QuestionResponseModel>>
+                if (questions.Count() == 0) return new BaseResponse<IEnumerable<QuestionResponseModel>>
                 {
                     Status = false,
                     Message = "Fetching Questions Returned Empty Data..."
@@ -421,7 +407,7 @@ namespace TaskProjectWebAPI.Implementations.Services
                     Message = "Fetching Question Returned Empty Data..."
                 };
 
-                var questionReturned = application.Adapt<QuestionResponseModel>();
+                var questionReturned = question.Adapt<QuestionResponseModel>();
                 return new BaseResponse<QuestionResponseModel>
                 {
                     Data = questionReturned,
@@ -450,12 +436,8 @@ namespace TaskProjectWebAPI.Implementations.Services
                     };
                 }
 
-                var deleteResponse = await _questionRepository.DeleteAsync(question);
-                if (!deleteResponse) return new BaseResponse<bool>
-                {
-                    Status = false,
-                    Message = $"An error occured! Question could not be deleted.",
-                };
+                await _questionRepository.DeleteAsync(question);
+                
                 return new BaseResponse<bool>
                 {
                     Status = true,

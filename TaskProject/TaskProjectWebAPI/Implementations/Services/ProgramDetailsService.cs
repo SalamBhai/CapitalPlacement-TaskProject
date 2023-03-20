@@ -1,11 +1,9 @@
 using TaskConsole.DTOs.RequestModels;
 using TaskProjectWebAPI.Interfaces.Services;
 using TaskConsole.DTOs.RetrievalModels;
-using TaskConsole.DTOs.RetrievalModels;
-using TaskConsole.Models;
-using System.Linq;
-using System.Threading.Tasks;
 using Mapster;
+using TaskProjectWebAPI.Interfaces.Repositories;
+
 namespace TaskProjectWebAPI.Interfaces.Services
 {
     public class ProgramDetailsService : IProgramDetailsService
@@ -34,7 +32,7 @@ namespace TaskProjectWebAPI.Interfaces.Services
                     ProgramType = programModel.ProgramType,
                     ApplicantQualification = programModel.ApplicantQualification,
                     Description = programModel.Description,
-                    ApplicantSkills = program.ApplicantSkills,
+                    ApplicantSkills = programModel.ApplicantSkills,
                     ApplicationCriteria = programModel.ApplicationCriteria,
                     Benefits = programModel.Benefits,
                     ApplicationEnds = programModel.ApplicationEnds,
@@ -45,7 +43,7 @@ namespace TaskProjectWebAPI.Interfaces.Services
                     ProgramLocations = programModel.ProgramLocations,
                 };
                 var savedResponse = await _programRepository.AddAsync(program);
-                if (!savedResponse) return new BaseResponse<bool>
+                if (savedResponse is null) return new BaseResponse<bool>
                 {
                     Status = false,
                     Message = $"An error occured, Program could not be saved.",
@@ -62,26 +60,26 @@ namespace TaskProjectWebAPI.Interfaces.Services
                 throw;
             }
         }
-        public async Task<BaseResponse<bool>> EditProgramAsync(UpdateProgram programModel, string ProgramTitle)
+        public async Task<BaseResponse<bool>> EditProgramAsync(UpdateProgram programModel, string programTitle)
         {
             try
             {
-                var program = await _programRepository.GetAsync(pg => pg.ProgramTitle == ProgramTitle);
+                var program = await _programRepository.GetAsync(pg => pg.ProgramTitle == programTitle);
 
                 if (program is null)
                 {
                     return new BaseResponse<bool>
                     {
                         Status = false,
-                        Message = $"Program With Program Title: {programModel.ProgramTitle} does not exist",
+                        Message = $"Program With Program Title: {programTitle} does not exist",
                     };
                 }
-                program.Benefits = program.Benefits.AddRange(programModel.Benefits);
-                program.ApplicationCriteria = program.ApplicationCriteria.AddRange(programModel.ApplicationCriteria);
-                program.ProgramLocations = program.ProgramLocations.AddRange(programModel.ProgramLocations);
+               program.Benefits.AddRange(programModel.Benefits);
+                 program.ApplicationCriteria.AddRange(programModel.ApplicationCriteria);
+                program.ProgramLocations.AddRange(programModel.ProgramLocations);
 
                 var updateResponse = await _programRepository.UpdateAsync(program);
-                if (!updateResponse) return new BaseResponse<bool>
+                if (updateResponse is null) return new BaseResponse<bool>
                 {
                     Status = false,
                     Message = $"An error occured! Program could not be updated.",
@@ -105,7 +103,7 @@ namespace TaskProjectWebAPI.Interfaces.Services
             try
             {
                 var programs = await _programRepository.GetAllAsync();
-                if (programs.Count == 0) return new BaseResponse<IEnumerable<ProgramModel>>
+                if (programs.Count() == 0) return new BaseResponse<IEnumerable<ProgramModel>>
                 {
                     Status = false,
                     Message = "Fetching Programs Returned Empty Data..."
@@ -118,14 +116,6 @@ namespace TaskProjectWebAPI.Interfaces.Services
                     Status = true,
                     Message = "Programs Successfully Retrieved..."
                 }; 
-
-                var programsReturned = programs.Select(app => app.Adapt<ProgramModel>()).ToList();
-                return new BaseResponse<IEnumerable<ProgramModel>>
-                {
-                    Data = programsReturned,
-                    Status = true,
-                    Message = "Programs Successfully Retrieved..."
-                };
             }
             catch (Exception)
             {
@@ -157,7 +147,7 @@ namespace TaskProjectWebAPI.Interfaces.Services
                 throw;
             }
         }
-        public async Task<BaseResponse<ProgramModel>> GetProgramAsync(string programTitle)
+        public async Task<BaseResponse<ProgramModel>> GetProgramByTitleAsync(string programTitle)
         {
             try
             {
@@ -198,12 +188,7 @@ namespace TaskProjectWebAPI.Interfaces.Services
                     };
                 }
 
-                var deleteResponse = await _programRepository.DeleteAsync(program);
-                if (!deleteResponse) return new BaseResponse<bool>
-                {
-                    Status = false,
-                    Message = $"An error occured! program could not be deleted.",
-                };
+                 await _programRepository.DeleteAsync(program);
                 return new BaseResponse<bool>
                 {
                     Status = true,

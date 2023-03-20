@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\TaskProject\\TaskConsole\\TaskConsole.csproj": {}
+    "c:\\Users\\user\\Desktop\\CapitalPlacement-TaskProject\\TaskProject\\TaskConsole\\TaskConsole.csproj": {}
   },
   "projects": {
-    "D:\\TaskProject\\TaskConsole\\TaskConsole.csproj": {
+    "c:\\Users\\user\\Desktop\\CapitalPlacement-TaskProject\\TaskProject\\TaskConsole\\TaskConsole.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\TaskProject\\TaskConsole\\TaskConsole.csproj",
+        "projectUniqueName": "c:\\Users\\user\\Desktop\\CapitalPlacement-TaskProject\\TaskProject\\TaskConsole\\TaskConsole.csproj",
         "projectName": "TaskConsole",
-        "projectPath": "D:\\TaskProject\\TaskConsole\\TaskConsole.csproj",
+        "projectPath": "c:\\Users\\user\\Desktop\\CapitalPlacement-TaskProject\\TaskProject\\TaskConsole\\TaskConsole.csproj",
         "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "D:\\TaskProject\\TaskConsole\\obj\\",
+        "outputPath": "c:\\Users\\user\\Desktop\\CapitalPlacement-TaskProject\\TaskProject\\TaskConsole\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",

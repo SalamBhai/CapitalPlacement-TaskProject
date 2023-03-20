@@ -1,6 +1,5 @@
 ﻿using TaskConsole.DTOs.RetrievalModels;
 using TaskConsole.DTOs.RequestModels;
-using TaskConsole.DTOs.RetrievalModels;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 namespace TaskProjectWebAPI.Interfaces.Services
@@ -11,7 +10,7 @@ namespace TaskProjectWebAPI.Interfaces.Services
         Task<BaseResponse<bool>> EditProgramAsync(UpdateProgram programModel, string programTitle);
         Task<BaseResponse<IEnumerable<ProgramModel>>> GetAllProgramsAsync();
         Task<BaseResponse<ProgramModel>> GetProgramAsync(string Id);
-        Task<BaseResponse<ProgramModel>> GetProgramAsync(string ProgramTitle);
+       Task<BaseResponse<ProgramModel>> GetProgramByTitleAsync(string programTitle);
         Task<BaseResponse<bool>> DeleteProgramAsync(string Id);
 
     }
